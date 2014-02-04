@@ -1,5 +1,5 @@
 /*
- * (C) Copyright ${year} Nuxeo SA (http://nuxeo.com/) and others.
+ * (C) Copyright 2014 Nuxeo SA (http://nuxeo.com/) and others.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the GNU Lesser General Public License
@@ -12,7 +12,7 @@
  * Lesser General Public License for more details.
  *
  * Contributors:
- *     thibaud
+ *     Thibaud Arguillere (Nuxeo)
  */
 
 package nuxeo.utils.nxql.aggregate;
@@ -27,7 +27,7 @@ import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 
 /**
- * @author Thibaud Arguillere
+ * @author Thibaud Arguillere (Nuxeo)
  */
 @Operation(id=NXQLAggregateOneValue.ID, category=Constants.CAT_FETCH, label="NXQL Aggregate One Value", description="")
 public class NXQLAggregateOneValue {

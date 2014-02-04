@@ -12,7 +12,7 @@
  * Lesser General Public License for more details.
  *
  * Contributors:
- *     thibaud
+ *     Thibaud Arguillere (Nuxeo)
  */
 package nuxeo.utils.nxql.aggregate;
 
@@ -25,7 +25,7 @@ import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.IterableQueryResult;
 
 /**
- * @author Thibaud Arguillere
+ * @author Thibaud Arguillere (Nuxeo)
  *
  * @since 5.9.2
  */
