@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-Vendor: Nuxeo
+Bundle-ActivationPolicy: lazy
+Bundle-ClassPath: .
+Bundle-Version: 1.0.qualifier
+Bundle-Name: nuxeo-utils-nxql-aggregate
+Bundle-ManifestVersion: 2
+Nuxeo-Component: OSGI-INF/extensions/nuxeo.utils.nxql.aggregate.NXQLAg
+ gregateOneValue.xml,OSGI-INF/extensions/nuxeo.utils.nxql.aggregate.NX
+ QLAggregateAllValues.xml
+Bundle-SymbolicName: nuxeo-utils-nxql-aggregate
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+

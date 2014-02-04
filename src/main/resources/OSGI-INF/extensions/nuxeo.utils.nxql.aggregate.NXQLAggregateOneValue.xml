@@ -1,0 +1,8 @@
+<component name="nuxeo.utils.nxql.aggregate.NXQLAggregateOneValue">
+
+  <extension target="org.nuxeo.ecm.core.operation.OperationServiceComponent"
+    point="operations" >
+      <operation class="nuxeo.utils.nxql.aggregate.NXQLAggregateOneValue" />
+   </extension>
+    
+</component>
