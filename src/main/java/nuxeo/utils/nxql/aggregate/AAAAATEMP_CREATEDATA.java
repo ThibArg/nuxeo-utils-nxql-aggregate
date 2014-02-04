@@ -68,6 +68,11 @@ public class AAAAATEMP_CREATEDATA {
     @Param(name = "stopFilePath", required = false)
     protected String stopFilePath = "";
 
+    private int _RandomInt(int inMin, int inMax) {
+        // No error check here
+        return inMin + (int)(Math.random() * ((inMax - inMin) + 1));
+    }
+
     @OperationMethod
     public DocumentModel run(DocumentModel input) throws ClientException, InterruptedException {
         String mainParentPath = input.getPathAsString();
@@ -75,6 +80,11 @@ public class AAAAATEMP_CREATEDATA {
         File stopFile = (stopFilePath == null || stopFilePath.isEmpty()) ? null : new File(stopFilePath);
 
         log.warn("Creating " + howMany + " Account");
+
+        if(stopFile != null && stopFile.exists()) {
+            log.warn("The stopFile already exists. Only some Accoutn will be created.");
+            log.warn("(you probably forgot to remove/rename if after a previous test)");
+        }
 
         if(howMany <= 0) {
             howMany = 1000;
@@ -95,8 +105,8 @@ public class AAAAATEMP_CREATEDATA {
             DocumentModel account = session.createDocumentModel(mainParentPath, "a-" + i, "Account");
 
             account.setPropertyValue("dc:title", "a-" + i);
-            account.setPropertyValue("ac:the_value_int", i);
-            account.setPropertyValue("ac:the_value_double", i);
+            account.setPropertyValue("ac:the_value_int", _RandomInt(0, 1000));
+            account.setPropertyValue("ac:the_value_double", _RandomInt(0, 1000));
 
             account = session.createDocument(account);
             session.saveDocument(account);

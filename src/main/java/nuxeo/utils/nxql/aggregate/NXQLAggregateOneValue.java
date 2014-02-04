@@ -17,6 +17,8 @@
 
 package nuxeo.utils.nxql.aggregate;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.nuxeo.ecm.automation.OperationContext;
 import org.nuxeo.ecm.automation.core.Constants;
 import org.nuxeo.ecm.automation.core.annotations.Context;
@@ -33,6 +35,7 @@ import org.nuxeo.ecm.core.api.CoreSession;
 public class NXQLAggregateOneValue {
 
     public static final String ID = "NXQLAggregate.OneValue";
+    private static final Log log = LogFactory.getLog(NXQLAggregateOneValue.class);
 
     @Context
     protected CoreSession session;
@@ -75,6 +78,7 @@ public class NXQLAggregateOneValue {
                                             exludeVersions,
                                             exludeDeleted);
 
+        long t = System.currentTimeMillis();
         switch(kind.toLowerCase()) {
         case "sum":
             value = agg.sum();
@@ -100,6 +104,8 @@ public class NXQLAggregateOneValue {
             throw new ClientException("NXQLAggregateOneValue: Invalid kind (" + kind + ")");
             //break;
         }
+        long d = System.currentTimeMillis() - t;
+        log.warn( String.format("Aggregate one value (" + kind + ": %dms", d) );
 
         ctx.put(varName, value);
     }

@@ -17,6 +17,8 @@
 
 package nuxeo.utils.nxql.aggregate;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.nuxeo.ecm.automation.OperationContext;
 import org.nuxeo.ecm.automation.core.Constants;
 import org.nuxeo.ecm.automation.core.annotations.Context;
@@ -33,6 +35,7 @@ import org.nuxeo.ecm.core.api.CoreSession;
 public class NXQLAggregateAllValues {
 
     public static final String ID = "NXQLAggregate.AllValues";
+    private static final Log log = LogFactory.getLog(NXQLAggregateAllValues.class);
 
     @Context
     protected CoreSession session;
@@ -71,7 +74,10 @@ public class NXQLAggregateAllValues {
                                             exludeVersions,
                                             exludeDeleted);
 
+        long t = System.currentTimeMillis();
         NXQLAggregateResults results = agg.aggregate( NXQLAggregate.kALL );
+        long d = System.currentTimeMillis() - t;
+        log.warn( String.format("Aggregate all values: %dms", d) );
         ctx.put(varName, results.toJSONString());
     }
 
