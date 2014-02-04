@@ -1,10 +1,10 @@
-/* IMPORTANT: This is just a utility class/operation because I was too lazzy
+/* IMPORTANT: This is just a utility class/operation because I was too lazy
  * to create a separate plug-in, etc. So, even if it's in the git repo as of
- * today (say, backup purpose), it must be deleted before releasiing the first
+ * today (say, backup purpose), it must be deleted before releasing the first
  * version.
- * Its putpose it to build Account documents, with values for their the_value_int
+ * Its purpose it to build Account documents, with values for their the_value_int
  * and the_value_double fields.
- * This is quick and dirty work, wile I use to be long and clean :-) :-)
+ * This is quick and dirty work. It does the job and it's good enough.
  * If I forget to remove it, well. Too bad, but nothing bad will happen actually :->
  */
 /*
