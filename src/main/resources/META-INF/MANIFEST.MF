@@ -7,7 +7,8 @@ Bundle-Name: nuxeo-utils-nxql-aggregate
 Bundle-ManifestVersion: 2
 Nuxeo-Component: OSGI-INF/extensions/nuxeo.utils.nxql.aggregate.NXQLAg
  gregateOneValue.xml,OSGI-INF/extensions/nuxeo.utils.nxql.aggregate.NX
- QLAggregateAllValues.xml
+ QLAggregateAllValues.xml,OSGI-INF/extensions/nuxeo.utils.nxql.aggrega
+ te.AAAAATEMP_CREATEDATA.xml
 Bundle-SymbolicName: nuxeo-utils-nxql-aggregate
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 
