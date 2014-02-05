@@ -130,6 +130,6 @@ public class NXQLAggregateResults {
     }
 
     public Blob toBlob() {
-        return new StringBlob( toJSONString(), "text/plain", "UTF-8" );
+        return new StringBlob( toJSONString(), "application/json" );
     }
 }

@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2014 Nuxeo SA (http://nuxeo.com/) and others.
+ * (C) Copyright ${year} Nuxeo SA (http://nuxeo.com/) and contributors.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the GNU Lesser General Public License
@@ -12,7 +12,7 @@
  * Lesser General Public License for more details.
  *
  * Contributors:
- *     Thibaud Arguillere (Nuxeo)
+ *     thibaud
  */
 
 package nuxeo.utils.nxql.aggregate;
@@ -25,26 +25,24 @@ import org.nuxeo.ecm.automation.core.annotations.Context;
 import org.nuxeo.ecm.automation.core.annotations.Operation;
 import org.nuxeo.ecm.automation.core.annotations.OperationMethod;
 import org.nuxeo.ecm.automation.core.annotations.Param;
+import org.nuxeo.ecm.core.api.Blob;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 
 /**
- * @author Thibaud Arguillere (Nuxeo)
+ *
  */
-@Operation(id=NXQLAggregateOneValue.ID, category=Constants.CAT_FETCH, label="NXQL Aggregate One Value", description="")
-public class NXQLAggregateOneValue {
+@Operation(id=NXQLAggregateAllFunctionsOp.ID, category=Constants.CAT_FETCH, label="NXQL Aggregate: All Functions", description="")
+public class NXQLAggregateAllFunctionsOp {
 
-    public static final String ID = "NXQLAggregate.OneValue";
-    private static final Log log = LogFactory.getLog(NXQLAggregateOneValue.class);
+    public static final String ID = "NXQLAggregate.AllFunctions";
+    private static final Log log = LogFactory.getLog(NXQLAggregateAllFunctionsOp.class);
 
     @Context
     protected CoreSession session;
 
     @Context
     protected OperationContext ctx;
-
-    @Param(name = "kind", required = true, widget = Constants.W_OPTION, values = {"Sum", "Min", "Max", "Average", "Count"})
-    protected String kind = "Sum";
 
     @Param(name = "fieldPath", required = true/*, order = 0*/)
     protected String fieldPath;
@@ -64,50 +62,29 @@ public class NXQLAggregateOneValue {
     @Param(name = "exludeDeleted", required = false, values = {"true"}/*, order = 5*/)
     protected boolean exludeDeleted = true;
 
-    @Param(name = "varName", required = true/*, order = 6*/)
+    @Param(name = "varName", required = false/*, order = 6*/)
     protected String varName;
 
     @OperationMethod
-    public void run() throws Exception {
-        double value = 0.0;
+    public Blob run() throws ClientException {
         NXQLAggregate agg = new NXQLAggregate(session,
-                                            fieldPath,
-                                            documentType,
-                                            whereClause,
-                                            exludeHiddenInNavigation,
-                                            exludeVersions,
-                                            exludeDeleted);
+                fieldPath,
+                documentType,
+                whereClause,
+                exludeHiddenInNavigation,
+                exludeVersions,
+                exludeDeleted);
 
         long t = System.currentTimeMillis();
-        switch(kind.toLowerCase()) {
-        case "sum":
-            value = agg.sum();
-            break;
-
-        case "min":
-            value = agg.min();
-            break;
-
-        case "max":
-            value = agg.max();
-            break;
-
-        case "average":
-            value = agg.average();
-            break;
-
-        case "count":
-            value = agg.count();
-            break;
-
-        default:
-            throw new ClientException("NXQLAggregateOneValue: Invalid kind (" + kind + ")");
-            //break;
-        }
+        NXQLAggregateResults results = agg.aggregate( NXQLAggregate.kALL );
         long d = System.currentTimeMillis() - t;
-        log.warn( String.format("Aggregate one value (" + kind + ": %dms", d) );
+        log.warn( String.format("Aggregate all values: %dms", d) );
 
-        ctx.put(varName, value);
+        if(ctx != null && varName != null && !varName.isEmpty()) {
+            ctx.put(varName, results.toJSONString());
+        }
+
+        return results.toBlob();
     }
 
 }

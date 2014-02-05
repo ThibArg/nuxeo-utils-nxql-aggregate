@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2014 Nuxeo SA (http://nuxeo.com/) and others.
+ * (C) Copyright ${year} Nuxeo SA (http://nuxeo.com/) and contributors.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the GNU Lesser General Public License
@@ -12,7 +12,7 @@
  * Lesser General Public License for more details.
  *
  * Contributors:
- *     Thibaud Arguillere (Nuxeo)
+ *     thibaud
  */
 
 package nuxeo.utils.nxql.aggregate;
@@ -25,23 +25,28 @@ import org.nuxeo.ecm.automation.core.annotations.Context;
 import org.nuxeo.ecm.automation.core.annotations.Operation;
 import org.nuxeo.ecm.automation.core.annotations.OperationMethod;
 import org.nuxeo.ecm.automation.core.annotations.Param;
+import org.nuxeo.ecm.core.api.Blob;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
+import org.nuxeo.ecm.core.api.impl.blob.StringBlob;
 
 /**
- * @author Thibaud Arguillere (Nuxeo)
+ *
  */
-@Operation(id=NXQLAggregateAllValues.ID, category=Constants.CAT_FETCH, label="NXQL Aggregate All Values", description="")
-public class NXQLAggregateAllValues {
+@Operation(id=NXQLAggregateOneFunctionOp.ID, category=Constants.CAT_FETCH, label="NXQL Aggregate: One Function", description="")
+public class NXQLAggregateOneFunctionOp {
 
-    public static final String ID = "NXQLAggregate.AllValues";
-    private static final Log log = LogFactory.getLog(NXQLAggregateAllValues.class);
+    public static final String ID = "NXQLAggregate.OneFunction";
+    private static final Log log = LogFactory.getLog(NXQLAggregateOneFunctionOp.class);
 
     @Context
     protected CoreSession session;
 
     @Context
     protected OperationContext ctx;
+
+    @Param(name = "kind", required = true, widget = Constants.W_OPTION, values = {"Sum", "Min", "Max", "Average", "Count"})
+    protected String kind = "Sum";
 
     @Param(name = "fieldPath", required = true/*, order = 0*/)
     protected String fieldPath;
@@ -61,11 +66,12 @@ public class NXQLAggregateAllValues {
     @Param(name = "exludeDeleted", required = false, values = {"true"}/*, order = 5*/)
     protected boolean exludeDeleted = true;
 
-    @Param(name = "varName", required = true/*, order = 6*/)
+    @Param(name = "varName", required = false/*, order = 6*/)
     protected String varName;
 
     @OperationMethod
-    public void run() throws ClientException {
+    public Blob run() throws Exception {
+        double value = 0.0;
         NXQLAggregate agg = new NXQLAggregate(session,
                                             fieldPath,
                                             documentType,
@@ -75,10 +81,38 @@ public class NXQLAggregateAllValues {
                                             exludeDeleted);
 
         long t = System.currentTimeMillis();
-        NXQLAggregateResults results = agg.aggregate( NXQLAggregate.kALL );
-        long d = System.currentTimeMillis() - t;
-        log.warn( String.format("Aggregate all values: %dms", d) );
-        ctx.put(varName, results.toJSONString());
-    }
+        switch(kind.toLowerCase()) {
+        case "sum":
+            value = agg.sum();
+            break;
 
+        case "min":
+            value = agg.min();
+            break;
+
+        case "max":
+            value = agg.max();
+            break;
+
+        case "average":
+            value = agg.average();
+            break;
+
+        case "count":
+            value = agg.count();
+            break;
+
+        default:
+            throw new ClientException("NXQLAggregateOneValue: Invalid kind (" + kind + ")");
+            //break;
+        }
+        long d = System.currentTimeMillis() - t;
+        log.warn( String.format("Aggregate one value (" + kind + ": %dms", d) );
+
+        if(ctx != null && varName != null && !varName.isEmpty()) {
+            ctx.put(varName, value);
+        }
+
+        return new StringBlob("{\"" + kind.toLowerCase() + "\":" + value + "}", "application/json");
+    }
 }

@@ -5,10 +5,10 @@ Bundle-ClassPath: .
 Bundle-Version: 1.0.qualifier
 Bundle-Name: nuxeo-utils-nxql-aggregate
 Bundle-ManifestVersion: 2
-Nuxeo-Component: OSGI-INF/extensions/nuxeo.utils.nxql.aggregate.NXQLAg
- gregateOneValue.xml,OSGI-INF/extensions/nuxeo.utils.nxql.aggregate.NX
- QLAggregateAllValues.xml,OSGI-INF/extensions/nuxeo.utils.nxql.aggrega
- te.AAAAATEMP_CREATEDATA.xml
+Nuxeo-Component: OSGI-INF/extensions/nuxeo.utils.nxql.aggregate.AAAAAT
+ EMP_CREATEDATA.xml,OSGI-INF/extensions/nuxeo.utils.nxql.aggregate.NXQ
+ LAggregateOneFunctionOp.xml,OSGI-INF/extensions/nuxeo.utils.nxql.aggr
+ egate.NXQLAggregateAllFunctionsOp.xml
 Bundle-SymbolicName: nuxeo-utils-nxql-aggregate
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 
