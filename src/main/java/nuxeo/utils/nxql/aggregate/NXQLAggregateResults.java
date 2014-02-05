@@ -35,22 +35,53 @@ public class NXQLAggregateResults {
 
     }
 
-    public NXQLAggregateResults(double sum, double min, double max,
-            double average, double count) {
-        this.sum = sum;
-        this.min = min;
-        this.max = max;
-        this.average = average;
-        this.count = count;
+    public NXQLAggregateResults(double inSum, double inMin, double inMax,
+            double inAverage, double inCount) {
+        sum = inSum;
+        min = inMin;
+        max = inMax;
+        average = inAverage;
+        count = inCount;
     }
 
-    public void setValues(double sum, double min, double max,
-            double average, double count) {
-        this.sum = sum;
-        this.min = min;
-        this.max = max;
-        this.average = average;
-        this.count = count;
+    public NXQLAggregateResults(NXQLAggregateResults inOther) {
+        setValues(inOther.getSum(), inOther.getMin(), inOther.getMax(), inOther.getAverage(), inOther.getCount());
+    }
+
+    public void setValues(double inSum, double inMin, double inMax,
+            double inAverage, double inCount) {
+        sum = inSum;
+        min = inMin;
+        max = inMax;
+        average = inAverage;
+        count = inCount;
+    }
+
+    @Override
+    public String toString() {
+        return toJSONString();
+    }
+
+    @Override
+    public boolean equals(Object inOther) {
+        if(inOther == null) {
+            return false;
+        }
+
+        if(inOther == this) {
+            return true;
+        }
+
+        if (!(inOther instanceof NXQLAggregateResults)) {
+            return false;
+        }
+
+        NXQLAggregateResults theOther = (NXQLAggregateResults)inOther;
+        return      sum == theOther.getSum()
+                &&  min == theOther.getMin()
+                &&  max == theOther.getMax()
+                &&  average == theOther.getAverage()
+                &&  count == theOther.getCount();
     }
 
     public double getSum() {

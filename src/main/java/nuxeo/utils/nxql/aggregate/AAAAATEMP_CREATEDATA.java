@@ -43,7 +43,7 @@ import org.nuxeo.runtime.transaction.TransactionHelper;
 /**
  * @author Thibaud Arguillere (Nuxeo)
  */
-@Operation(id=AAAAATEMP_CREATEDATA.ID, category=Constants.CAT_DOCUMENT, label="AAAAATEMP_CREATEDATE", description="")
+@Operation(id=AAAAATEMP_CREATEDATA.ID, category=Constants.CAT_DOCUMENT, label="AAAAATEMP_CREATEDATA", description="")
 public class AAAAATEMP_CREATEDATA {
 
     public static final String ID = "AAAAATEMP_CREATEDATA";
