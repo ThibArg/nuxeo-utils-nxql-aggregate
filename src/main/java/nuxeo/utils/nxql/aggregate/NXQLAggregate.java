@@ -78,43 +78,45 @@ public class NXQLAggregate {
 
 
     public NXQLAggregateResults aggregate(int inFlags) throws ClientException {
-        IterableQueryResult iqr = _session.queryAndFetch(_statement, "NXQL", (Object[]) null);
-        Iterator<Map<String, Serializable>> it = iqr.iterator();
-        double  sum = 0.0,
-                min = Double.MAX_VALUE,
-                max = (Double.MAX_VALUE - 1) * -1,
-                average = 0.0,
-                value = 0.0;
+        IterableQueryResult iqr = null;
+        double sum = 0.0, min = Double.MAX_VALUE, max = (Double.MAX_VALUE - 1)
+                * -1, average = 0.0, value = 0.0;
         long count = 0;
-
         boolean doSum = (inFlags & kSUM) != 0,
                 doMin = (inFlags & kMIN) != 0,
                 doMax = (inFlags & kMAX) != 0,
                 doAverage = (inFlags & kAVERAGE) != 0,
                 doCount = (inFlags & kCOUNT) != 0;
 
-        while( it.hasNext()) {
-            value = ((Long) it.next().get(_fieldPath)).doubleValue();
-            if(doSum || doAverage) {
-                sum += value;
+        try {
+            iqr = _session.queryAndFetch(_statement, "NXQL", (Object[]) null);
+            Iterator<Map<String, Serializable>> it = iqr.iterator();
+            while (it.hasNext()) {
+                value = ((Long) it.next().get(_fieldPath)).doubleValue();
+                if (doSum || doAverage) {
+                    sum += value;
+                }
+                if (doMin && value < min) {
+                    min = value;
+                }
+                if (doMax && value > max) {
+                    max = value;
+                }
+                if (doCount || doAverage) {
+                    count++;
+                }
             }
-            if(doMin && value < min) {
-                min = value;
+            if (doAverage) {
+                average = sum / count;
             }
-            if(doMax && value > max) {
-                max = value;
-            }
-            if(doCount || doAverage) {
-                count++;
+
+            return new NXQLAggregateResults(sum, min, max, average, count);
+
+        } finally {
+            if (iqr != null) {
+                iqr.close();
             }
         }
-        iqr.close();
-
-        if(doAverage) {
-            average = sum / count;
-        }
-
-        return new NXQLAggregateResults(sum, min, max, average, count);
     }
 
 
@@ -190,40 +192,47 @@ public class NXQLAggregate {
     }
 
     private double _aggregateOne(int inWhat) throws Exception {
-        IterableQueryResult iqr = _session.queryAndFetch(_statement, "NXQL", (Object[]) null);
-        Iterator<Map<String, Serializable>> it = iqr.iterator();
-
+        IterableQueryResult iqr = null;
         double value = 0.0;
-        _NXQLAggregateCallback cb = new _NXQLAggregateCallback(it);
 
-        switch(inWhat) {
-        case NXQLAggregate.kSUM:
-            value = cb.sum();
-            break;
+        try {
+            iqr = _session.queryAndFetch(_statement, "NXQL", (Object[]) null);
+            Iterator<Map<String, Serializable>> it = iqr.iterator();
 
-        case NXQLAggregate.kMIN:
-            value = cb.min();
-            break;
+            _NXQLAggregateCallback cb = new _NXQLAggregateCallback(it);
 
-        case NXQLAggregate.kMAX:
-            value = cb.max();
-            break;
+            switch (inWhat) {
+            case NXQLAggregate.kSUM:
+                value = cb.sum();
+                break;
 
-        case NXQLAggregate.kAVERAGE:
-            value = cb.average();
-            break;
+            case NXQLAggregate.kMIN:
+                value = cb.min();
+                break;
 
-        case NXQLAggregate.kCOUNT:
-            value = cb.count();
-            break;
+            case NXQLAggregate.kMAX:
+                value = cb.max();
+                break;
 
-        default:
-            throw new Exception("Invalid aggregate selector");
+            case NXQLAggregate.kAVERAGE:
+                value = cb.average();
+                break;
+
+            case NXQLAggregate.kCOUNT:
+                value = cb.count();
+                break;
+
+            default:
+                throw new Exception("Invalid aggregate selector");
+            }
+
+            return value;
+
+        } finally {
+            if(iqr != null) {
+                iqr.close();
+            }
         }
-        //.sum();
-        iqr.close();
-
-        return value;
     }
 
     public double sum() throws Exception {
