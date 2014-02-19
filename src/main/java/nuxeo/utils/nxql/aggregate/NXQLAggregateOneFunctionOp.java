@@ -1,5 +1,5 @@
 /*
- * (C) Copyright ${year} Nuxeo SA (http://nuxeo.com/) and contributors.
+ * (C) Copyright 2014 Nuxeo SA (http://nuxeo.com/) and others.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the GNU Lesser General Public License
@@ -12,7 +12,7 @@
  * Lesser General Public License for more details.
  *
  * Contributors:
- *     thibaud
+ *     Thibaud Arguillere (Nuxeo)
  */
 
 package nuxeo.utils.nxql.aggregate;
@@ -31,7 +31,10 @@ import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.impl.blob.StringBlob;
 
 /**
+ * @author Thibaud Arguillere (Nuxeo)
  *
+ * Up to 5.9.1. Starting at 5.9.2, SUM/MIN/etc. are supported by NXQL, use
+ * the "master" branch of this plugin
  */
 @Operation(id=NXQLAggregateOneFunctionOp.ID, category=Constants.CAT_FETCH, label="NXQL Aggregate: One Function", description="")
 public class NXQLAggregateOneFunctionOp {

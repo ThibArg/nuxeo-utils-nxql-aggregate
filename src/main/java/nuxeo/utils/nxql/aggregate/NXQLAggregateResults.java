@@ -22,7 +22,8 @@ import org.nuxeo.ecm.core.api.impl.blob.StringBlob;
 /**
  * @author Thibaud Arguillere (Nuxeo)
  *
- * @since 5.9.2
+ * Up to 5.9.1. Starting at 5.9.2, SUM/MIN/etc. are supported by NXQL, use
+ * the "master" branch of this plugin
  */
 public class NXQLAggregateResults {
     private double sum = 0.0;

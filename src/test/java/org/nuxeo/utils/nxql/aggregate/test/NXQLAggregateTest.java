@@ -1,5 +1,5 @@
 /*
- * (C) Copyright ${year} Nuxeo SA (http://nuxeo.com/) and others.
+ * (C) Copyright 2014 Nuxeo SA (http://nuxeo.com/) and others.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the GNU Lesser General Public License
@@ -12,7 +12,7 @@
  * Lesser General Public License for more details.
  *
  * Contributors:
- *     thibaud
+ *     Thibaud Arguillere (Nuxeo)
  */
 
 package org.nuxeo.utils.nxql.aggregate.test;
@@ -27,7 +27,6 @@ import org.junit.runner.RunWith;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.platform.test.PlatformFeature;
-import org.nuxeo.runtime.test.runner.Deploy;
 import org.nuxeo.runtime.test.runner.Features;
 import org.nuxeo.runtime.test.runner.FeaturesRunner;
 
@@ -35,13 +34,14 @@ import com.google.inject.Inject;
 
 /**
  * @author Thibaud Arguillere
+ *
+ * WARNING: To store some numeric values, we use the common:size field
+ * This is bad. But very convenient => no need to create a new schema,
+ * deploy, etc.
  */
 
 @RunWith(FeaturesRunner.class)
-@Features(PlatformFeature.class)
-@Deploy({
-	"targuillere-SANDBOX",
-	})
+@Features({PlatformFeature.class})
 public class NXQLAggregateTest {
 
     private static final int kSTART_AT = 1;
